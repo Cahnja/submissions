@@ -59,8 +59,10 @@ var doit = function(d){
 			  parseFloat(d.temp),
 			  parseFloat(d.wind)]};
     });
-
-
+    
+//    centroids = [ _.cloneDeep(data [0]),_.cloneDeep(data [1]),
+//		  _.cloneDeep(data [2])];
+    
     centroids = [ data [0],data [1],
 		  data [2]];
     
