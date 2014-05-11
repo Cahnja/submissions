@@ -1,0 +1,12 @@
+<html>
+  <head>
+    <script src = "d3.min.js"> </script> 
+    <script src = "lodash.js"> </script> 
+    <body>
+      <h1> Hello </h1>
+      <hr>
+      <span> <h2 id= "clickme">Click me to Cluster</h2> </span>
+      <script src = "main_proj.js"> </script> 
+    </body>
+  </head>
+</html>
