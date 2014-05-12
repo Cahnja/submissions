@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script src="d3.min.js"></script>
+    <script src="lodash.min.js"></script>
+
+    <style>
+     h1 {background-color:gray;}
+     svg {border: 1px solid;}
+     #click {background-color:yellow;}
+    </style>
+  </head>
+  <body>
+    <h1>Random</h1>
+
+    Cluster a data-set of random data
+
+    <span id="click">CLICK</span><hr>
+    <script src="random.js"></script>
+  </body>
+  
+</html>
