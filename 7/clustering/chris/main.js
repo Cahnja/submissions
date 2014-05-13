@@ -73,17 +73,34 @@ var analyze = function(d) {
     upperclass3 = _.filter(group3, function(d) {return d["Class"] == 0;});
     upperclass4 = _.filter(group4, function(d) {return d["Class"] == 0;});
 
-    console.log("Percent of people with income greater than 50K: " +
-		(totalupperclass.length*100/data.length) + "%");
-    console.log("Percent of group 1 with income greater than 50K: " +
-		(upperclass1.length*100/group1.length) + "%"); 
-    console.log("Percent of group 2 with income greater than 50K: " +
-		(upperclass2.length*100/group2.length) + "%"); 
-    console.log("Percent of group 3 with income greater than 50K: " +
-		(upperclass3.length*100/group3.length) + "%");    
-    console.log("Percent of group 3 with income greater than 50K: " +
-		(upperclass4.length*100/group4.length) + "%");    
+
+    var body = document.getElementsByTagName("body")[0];
+    var text1 = document.createTextNode("Percent of all people with income greater than 50K: " + (totalupperclass.length*100/data.length) + "%");
+    body.appendChild(text1);
+    body.appendChild(document.createElement("br"));
+    body.appendChild(document.createElement("br"));
+    var text2 = document.createTextNode("Percent of cluster 1 with income greater than 50K: " +	(upperclass1.length*100/group1.length) + "%"); 
+    body.appendChild(text2);
+    body.appendChild(document.createElement("br"));
+    body.appendChild(document.createElement("br"));
+    var text3 = document.createTextNode("Percent of cluster 2 with income greater than 50K: " + (upperclass2.length*100/group2.length) + "%"); 
+    body.appendChild(text3);
+    body.appendChild(document.createElement("br"));
+    body.appendChild(document.createElement("br"));
+    var text4 = document.createTextNode("Percent of cluster 3 with income greater than 50K: " + (upperclass3.length*100/group3.length) + "%");
+    body.appendChild(text4);
+    body.appendChild(document.createElement("br"));
+    body.appendChild(document.createElement("br"));
+    var text5 = document.createTextNode("Percent of cluster 4 with income greater than 50K: " +	(upperclass4.length*100/group4.length) + "%");    
+    body.appendChild(text5);
+
+    body.removeChild(document.getElementsByTagName("h3")[0]);
 }
+    
+    
+    
+    
+    
 
 d3.csv("census.data").row(function(d) {
     return {
