@@ -1,6 +1,7 @@
 var data = [];
 var centroids = [];
-
+var group1, group2, group3;
+var upperclass1, upperclass2, upperclass3;
 
 var age2num = function(d) {
     return d / 100;
@@ -44,12 +45,12 @@ var getKeys = function(dict) {
 var dist = function(d, c) {
     var zipped = _.zip(getKeys(d), getKeys(c));
     var distssquared = _.map(zipped, function(data) {return (data[1]-data[0])*(data[1]-data[0]);});
-    var sum = d3.sum(distssquared);
+    var sum = d3.sum(distssquared) - distssquared[distssquared.length - 1];
     return Math.sqrt(sum);
 }
 
 var minDist = function(d) {
-    var dists =[dist(d,centroids[0]),dist(d,centroids[1]),dist(d,centroids[2])];
+    var dists =[dist(d,centroids[0]),dist(d,centroids[1]),dist(d,centroids[2]),dist(d,centroids[3])];
     return dists.indexOf(d3.min(dists));
 }
 		      
@@ -58,6 +59,30 @@ var maptocentroids = function(d) {
     _.map(d, function(data) {
 	data["centroid"] = minDist(data);
 	return data;});
+}
+
+var analyze = function(d) {
+    group1 = _.filter(data, function(d) {return d["centroid"] == 0;});
+    group2 = _.filter(data, function(d) {return d["centroid"] == 1;});
+    group3 = _.filter(data, function(d) {return d["centroid"] == 2;});
+    group4 = _.filter(data, function(d) {return d["centroid"] == 3;});
+
+    totalupperclass = _.filter(data, function(d) {return d["Class"] == 0;});
+    upperclass1 = _.filter(group1, function(d) {return d["Class"] == 0;});
+    upperclass2 = _.filter(group2, function(d) {return d["Class"] == 0;});
+    upperclass3 = _.filter(group3, function(d) {return d["Class"] == 0;});
+    upperclass4 = _.filter(group4, function(d) {return d["Class"] == 0;});
+
+    console.log("Percent of people with income greater than 50K: " +
+		(totalupperclass.length*100/data.length) + "%");
+    console.log("Percent of group 1 with income greater than 50K: " +
+		(upperclass1.length*100/group1.length) + "%"); 
+    console.log("Percent of group 2 with income greater than 50K: " +
+		(upperclass2.length*100/group2.length) + "%"); 
+    console.log("Percent of group 3 with income greater than 50K: " +
+		(upperclass3.length*100/group3.length) + "%");    
+    console.log("Percent of group 3 with income greater than 50K: " +
+		(upperclass4.length*100/group4.length) + "%");    
 }
 
 d3.csv("census.data").row(function(d) {
@@ -70,10 +95,7 @@ d3.csv("census.data").row(function(d) {
 	Class : class2num(d["class"]) };
 }).get(function(error, rows) {
     data = rows;
-    centroids = [rows[0], rows[1], rows[2]];
-    var learningData = data.slice(0, 25000);
-    var testData = data.slice(25000);
-    maptocentroids(learningData);
-    console.log(data);
-    console.log(learningData);
+    centroids = [rows[parseInt(Math.random() * 32562)], rows[parseInt(Math.random() * 32562)], rows[parseInt(Math.random() * 32562)], rows[parseInt(Math.random() * 32562)]];
+    maptocentroids(data);
+    analyze(data);
 });
