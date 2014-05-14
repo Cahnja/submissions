@@ -1,4 +1,3 @@
-
 var data;
 var centroids,svg;
 var height=400, width=800;
@@ -34,7 +33,7 @@ var assign = function(centroids,data) {
     
 }
 
-
+/*
 var recenter = function(centroids,data) {
     _.each(centroids,function(d){
 	// pull out this centroids current points
@@ -48,31 +47,42 @@ var recenter = function(centroids,data) {
 	d.features = avgs;
     });
 }
-
+*/
 
 
 var doit = function(d){
     
     data = _.map(d, function(d) {
 	return {'realtype':parseInt(d.class),'type':parseInt(d.class),
-		features:[parseFloat(d.temp),
-			  parseFloat(d.wind),
-			  parseFloat(d.month),
-			  parseFloat(d.FFMC)]};
+		features:[String(d.DBN),
+			  String(d.school_name),
+              parseFloat(d.num_test_takers),
+			  parseFloat(d.reading_score),
+			  parseFloat(d.math_score),
+			  parseFloat(d.writing_score)]};
     });
-
-
-    centroids = [ data [0],data [1],
-		  data [2]];
+    
+//    centroids = [ _.cloneDeep(data [0]),_.cloneDeep(data [1]),
+//		  _.cloneDeep(data [2])];
+   
+    rand = new Array(3);
+    rand[0] = parseInt(Math.random()*data.length); 
+    rand[1] = parseInt(Math.random()*data.length);
+    rand[2] = parseInt(Math.random()*data.length);
+    while(rand[0] == rand[1]) 
+        rand[1] = parseInt(Math.random()*data.length);
+	while(rand[2] == rand[0] || rand[1] == rand[0])
+        rand[2] = parseInt(Math.random()*data.length);
+    centroids = [ data [rand[0]],data[rand[1]],data[rand[2]] ];
     
 
     xScale = d3.scale.linear()
-	.domain([d3.min(data,function(d) { return d.features[0];}),
-		 d3.max(data,function(d) { return d.features[0];})])
+	.domain([d3.min(data,function(d) { return d.features[3];}),
+		 d3.max(data,function(d) { return d.features[3];})])
 	.range([20,width-20]);
     yScale = d3.scale.linear()
-	.domain([d3.min(data,function(d) { return d.features[1];}),
-		 d3.max(data,function(d) { return d.features[1];})])
+	.domain([d3.min(data,function(d) { return d.features[4];}),
+		 d3.max(data,function(d) { return d.features[4];})])
 	.range([20,height-20]);
 
     items = svg.selectAll("item")
@@ -81,8 +91,8 @@ var doit = function(d){
 	    .append("circle")
 	    .attr('class','item')
 	    .attr('r',5)
-	    .attr('cx',function(d){return xScale(d.features[0]);})
-	    .attr('cy',function(d){return yScale(d.features[1]);})
+	    .attr('cx',function(d){return xScale(d.features[3]);})
+	    .attr('cy',function(d){return yScale(d.features[4]);})
 	.attr('stroke-width',3)
 	.attr('fill',function(d){return clustercolors[d.realtype];})
     	.attr('stroke',function(d){return clustercolors[d.realtype];});
@@ -93,8 +103,8 @@ var doit = function(d){
 	.append("circle")
 	.attr('class','centroid')
 	.attr('r',5)
-	.attr('cx',function(d){return xScale(d.features[0]);})
-	.attr('cy',function(d){return yScale(d.features[1]);})
+	.attr('cx',function(d){return xScale(d.features[3]);})
+	.attr('cy',function(d){return yScale(d.features[4]);})
 	.attr('stroke-width',3)
 	.attr('stroke','yellow')
 	.attr('fill',function(d){return clustercolors[d.realtype];});
@@ -109,14 +119,14 @@ var dist = function(a,b){
 
 var clusterit = function(){
     assign(centroids,data);
-    recenter(centroids,data);
+    //recenter(centroids,data);
     d3.selectAll(".centroid")
 	.transition()
   	.duration(1000)
 	.attr('stroke-width',3)
 	.attr('stroke','yellow')
-	.attr('cx',function(d){return xScale(d.features[0]);})
-	.attr('cy',function(d){return yScale(d.features[1]);});
+	.attr('cx',function(d){return xScale(d.features[3]);})
+	.attr('cy',function(d){return yScale(d.features[4]);});
 
     items
 	.data(data)
@@ -126,5 +136,7 @@ var clusterit = function(){
 
 }
 
-var click = d3.select("#clickme").on('click',clusterit);
-d3.csv("forestfires.csv",doit);
+var click = d3.select("#click").on('click',clusterit);
+d3.csv("SAT_Results.csv",doit);
+
+
