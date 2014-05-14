@@ -67,7 +67,7 @@ var doit = function(d){
 //    centroids = [ _.cloneDeep(data [0]),_.cloneDeep(data [1]),
 //		  _.cloneDeep(data [2])];
    
-    rands = new Array(3);
+    rand = new Array(3);
     rand[0] = parseInt(Math.random()*data.length); 
     rand[1] = parseInt(Math.random()*data.length);
     rand[2] = parseInt(Math.random()*data.length);
@@ -139,6 +139,6 @@ var clusterit = function(){
 }
 
 var click = d3.select("#click").on('click',clusterit);
-d3.csv("iris-swapped.csv",doit);
+d3.csv("SAT_Results.csv",doit);
 
 
