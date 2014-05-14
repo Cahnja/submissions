@@ -55,9 +55,10 @@ var doit = function(d){
     
     data = _.map(d, function(d) {
 	return {'realtype':parseInt(d.class),'type':parseInt(d.class),
-		features:[parseFloat(d.month),
-			  parseFloat(d.temp),
-			  parseFloat(d.wind)]};
+		features:[parseFloat(d.temp),
+			  parseFloat(d.wind),
+			  parseFloat(d.month),
+			  parseFloat(d.FFMC)]};
     });
 
 
@@ -125,5 +126,5 @@ var clusterit = function(){
 
 }
 
-var click = d3.select("#click").on('click',clusterit);
+var click = d3.select("#clickme").on('click',clusterit);
 d3.csv("forestfires.csv",doit);
