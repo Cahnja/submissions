@@ -73,7 +73,7 @@ var doit = function(d){
     rand[2] = parseInt(Math.random()*data.length);
     while(rand[0] == rand[1]) 
         rand[1] = parseInt(Math.random()*data.length);
-    while(rand[2] == rand[0] || rand[1] == rand[0])
+	while(rand[2] == rand[0] || rand[1] == rand[0])
         rand[2] = parseInt(Math.random()*data.length);
     centroids = [ data [rand[0]],data[rand[1]],data[rand[2]] ];
     
