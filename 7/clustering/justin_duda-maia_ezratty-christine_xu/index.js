@@ -35,7 +35,7 @@ var assign = function(centroids,data) {
     
 }
 
-
+/*
 var recenter = function(centroids,data) {
     _.each(centroids,function(d){
 	// pull out this centroids current points
@@ -49,7 +49,7 @@ var recenter = function(centroids,data) {
 	d.features = avgs;
     });
 }
-
+*/
 
 
 var doit = function(d){
@@ -121,7 +121,7 @@ var dist = function(a,b){
 
 var clusterit = function(){
     assign(centroids,data);
-    recenter(centroids,data);
+    //recenter(centroids,data);
     d3.selectAll(".centroid")
 	.transition()
   	.duration(1000)
