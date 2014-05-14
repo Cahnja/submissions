@@ -1,5 +1,3 @@
-
-
 var data;
 var centroids,svg;
 var height=400, width=800;
