@@ -1,6 +1,6 @@
 var data;
 var centroids,svg;
-var height=400, width=800;
+var height=800, width=800;
 var svg = d3.select("body")
 	.append('svg')
 	.attr('id','svg')
@@ -10,15 +10,17 @@ var svg = d3.select("body")
 var xScale;
 var yScale;
 var items,ccircles;
-var clustercolors = ['red','blue','black']
+var clustercolors = ['red','blue','green']
 
 
 var assign = function(centroids,data) {
     _.each(data, function(d){
 
 	var mins = _.map(centroids,function(d2) {
-	    return dist(d2.features,d.features);});
-
+	    return dist(d2.features.slice(3,5),d.features.slice(3,5));
+	});
+	//console.log(mins)
+	
 	var min = _.min(mins);
 	var mini = _.indexOf(mins,min);
 
@@ -26,34 +28,36 @@ var assign = function(centroids,data) {
 	d['type']=centroids[mini].realtype;
     });
 
-    items.attr('stroke-width',3)
+    items.attr('stroke-width',2)
 	.attr('stroke',function(d){ return clustercolors[d.type];})
 	.attr('fill',function(d){return clustercolors[d.realtype];});
     
     
 }
 
-/*
+
 var recenter = function(centroids,data) {
     _.each(centroids,function(d){
 	// pull out this centroids current points
 	var subset = _.filter(data,function(d2) { return d.realtype==d2.type;});
-	subset = _.map(subset,function(d) {return d.features;});
+	subset = _.map(subset,function(d) {return d.features.slice(3,5);});
 	var z = _.zip(subset);
 
 	var sums = _.map(z,function(d) {
 	    return _.reduce(d,function(a,b){return a+b;}); });
 	var avgs = _.map(sums, function(d,i) {return parseInt(d)/z[i].length;});
-	d.features = avgs;
+	d.features[3] = avgs[0];
+	d.features[4] = avgs[1];
     });
 }
-*/
+
 
 
 var doit = function(d){
     
     data = _.map(d, function(d) {
-	return {'realtype':parseInt(d.class),'type':parseInt(d.class),
+	var rand = Math.random()*3
+	return {'realtype':parseInt(rand),'type':parseInt(rand),
 		features:[String(d.DBN),
 			  String(d.school_name),
               parseFloat(d.num_test_takers),
@@ -79,11 +83,11 @@ var doit = function(d){
     xScale = d3.scale.linear()
 	.domain([d3.min(data,function(d) { return d.features[3];}),
 		 d3.max(data,function(d) { return d.features[3];})])
-	.range([20,width-20]);
+	.range([25,width-25]);
     yScale = d3.scale.linear()
 	.domain([d3.min(data,function(d) { return d.features[4];}),
 		 d3.max(data,function(d) { return d.features[4];})])
-	.range([20,height-20]);
+	.range([25,height-25]);
 
     items = svg.selectAll("item")
 	    .data(data)
@@ -119,7 +123,7 @@ var dist = function(a,b){
 
 var clusterit = function(){
     assign(centroids,data);
-    //recenter(centroids,data);
+    recenter(centroids,data);
     d3.selectAll(".centroid")
 	.transition()
   	.duration(1000)
